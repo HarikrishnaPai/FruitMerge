@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo GIF Frame Generator</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { margin: 0; padding: 0; background: #faf3e8; }
+    .demo-capture { width: 320px; padding: 0; background: #faf3e8; }
+    #demo-board {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+      aspect-ratio: 1; padding: 10px; background: var(--board-bg);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+    .demo-cell { position: relative; background: var(--cell-empty); border-radius: 10px; aspect-ratio: 1; }
+    .demo-tile {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      border-radius: 10px; font-size: 1.6rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+    .demo-arrow { min-height: 28px; margin: 10px 0 0; font-size: 1rem; font-weight: 700; color: #8f7a66; text-align: center; }
+    .demo-step-caption {
+      margin-top: 10px; padding: 12px 14px; background: var(--surface); border-radius: 12px;
+      font-size: 0.88rem; line-height: 1.45; text-align: center; min-height: 48px;
+      display: flex; align-items: center; justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-capture" id="demo-capture">
+    <div id="demo-board"></div>
+    <p id="demo-arrow" class="demo-arrow"></p>
+    <p id="demo-step-caption" class="demo-step-caption"></p>
+  </div>
+  <script>
+    const FRUITS = { 1: { emoji: "🫐", color: "#7b8cde" }, 2: { emoji: "🍓", color: "#f06292" }, 4: { emoji: "🍊", color: "#ff9800" } };
+    const FRAMES = [
+      { board: [[0,0,0,0],[0,0,0,0],[1,0,1,0],[0,0,0,0]], arrow: "←  Swipe Left", caption: "Two blueberries — swipe left to move tiles" },
+      { board: [[0,0,0,0],[0,0,0,0],[2,0,0,0],[0,0,0,0]], arrow: "", caption: "Matching fruits merge into the next fruit!" },
+      { board: [[0,0,0,0],[0,0,0,0],[2,0,1,0],[0,0,0,0]], arrow: "", caption: "After each move, a new tile appears" },
+      { board: [[0,0,0,0],[0,0,0,0],[2,2,1,0],[0,0,0,0]], arrow: "←  Swipe Left", caption: "Keep merging to grow bigger fruits" },
+      { board: [[0,0,0,0],[0,0,0,0],[4,1,0,0],[0,0,0,0]], arrow: "", caption: "Merged into an orange — score goes up!" },
+    ];
+    const boardEl = document.getElementById("demo-board");
+    const arrowEl = document.getElementById("demo-arrow");
+    const captionEl = document.getElementById("demo-step-caption");
+    window.setDemoFrame = function(index) {
+      const frame = FRAMES[index];
+      boardEl.innerHTML = "";
+      for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 4; col++) {
+          const cell = document.createElement("div");
+          cell.className = "demo-cell";
+          const value = frame.board[row][col];
+          if (value) {
+            const tile = document.createElement("div");
+            tile.className = "demo-tile";
+            tile.style.backgroundColor = FRUITS[value].color;
+            tile.textContent = FRUITS[value].emoji;
+            cell.appendChild(tile);
+          }
+          boardEl.appendChild(cell);
+        }
+      }
+      arrowEl.textContent = frame.arrow;
+      captionEl.textContent = frame.caption;
+    };
+    setDemoFrame(0);
+  </script>
+</body>
+</html>
