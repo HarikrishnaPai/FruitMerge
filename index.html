@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Fruit Merge 2048</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="game-container">
+    <header class="game-header">
+      <div class="title-block">
+        <h1>Fruit Merge 2048</h1>
+        <p class="subtitle">Merge fruits to reach the Golden Fruit!</p>
+      </div>
+      <div class="score-panel">
+        <div class="score-box">
+          <span class="score-label">Score</span>
+          <span id="score" class="score-value">0</span>
+        </div>
+        <div class="control-row">
+          <button id="mute-btn" class="mute-btn" type="button" aria-label="Mute sound">🔊</button>
+          <button id="restart-btn" class="restart-btn" type="button">Restart Game</button>
+        </div>
+      </div>
+    </header>
+
+    <div id="message-overlay" class="message-overlay hidden">
+      <div class="message-box">
+        <p id="message-text"></p>
+        <button id="message-restart-btn" class="restart-btn" type="button">Play Again</button>
+      </div>
+    </div>
+
+    <div id="game-board" class="game-board" aria-label="Fruit Merge game board">
+      <!-- Cells rendered by JavaScript -->
+    </div>
+
+    <section class="instructions" aria-label="How to play">
+      <figure class="demo-figure">
+        <img
+          id="play-demo-gif"
+          class="play-demo-gif"
+          src="assets/how-to-play.gif"
+          alt="Animated demo: swipe left to merge matching blueberries into a strawberry, then merge again to create an orange"
+          width="320"
+          height="380"
+          loading="lazy"
+        >
+        <figcaption class="demo-caption">Watch: swipe to slide tiles, merge matching fruits, and grow your score.</figcaption>
+      </figure>
+
+      <div class="instructions-grid">
+        <div class="instruction-card">
+          <h3>Goal</h3>
+          <p>Slide fruits across the board and merge matching pairs to grow bigger fruits. Reach <strong>👑 Golden Fruit</strong> to win!</p>
+        </div>
+
+        <div class="instruction-card">
+          <h3>Controls</h3>
+          <ul>
+            <li><strong>Desktop:</strong> Arrow keys (↑ ↓ ← →) or Click &amp; Drag</li>
+            <li><strong>Mobile:</strong> Swipe up, down, left, or right</li>
+          </ul>
+        </div>
+
+        <div class="instruction-card">
+          <h3>Merging</h3>
+          <p>When two identical fruits touch, they combine into the next fruit:</p>
+          <ul class="merge-example">
+            <li>🫐 + 🫐 → 🍓</li>
+            <li>🍓 + 🍓 → 🍊</li>
+            <li>🍊 + 🍊 → 🍎</li>
+          </ul>
+          <p class="merge-note">Keep merging to climb all the way to 👑 Golden Fruit (2048).</p>
+        </div>
+
+        <div class="instruction-card">
+          <h3>Scoring &amp; Game Over</h3>
+          <ul>
+            <li>Each merge adds the new fruit’s value to your score.</li>
+            <li>After every move, a new 🫐 or 🍓 appears in a random empty cell.</li>
+            <li>The game ends when the board is full and no merges are possible.</li>
+          </ul>
+        </div>
+
+        <div class="instruction-card fruit-chain-card">
+          <h3>Fruit Evolution Chain</h3>
+          <div class="fruit-chain">
+            <div class="chain-item">
+              <span class="chain-emoji">🫐</span>
+              <span class="chain-name">Blueberry</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item">
+              <span class="chain-emoji">🍓</span>
+              <span class="chain-name">Strawberry</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item">
+              <span class="chain-emoji">🍊</span>
+              <span class="chain-name">Orange</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item">
+              <span class="chain-emoji">🍎</span>
+              <span class="chain-name">Apple</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item">
+              <span class="chain-emoji">🍐</span>
+              <span class="chain-name">Pear</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item">
+              <span class="chain-emoji">🍑</span>
+              <span class="chain-name">Peach</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item">
+              <span class="chain-emoji">🍍</span>
+              <span class="chain-name">Pineapple</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item">
+              <span class="chain-emoji">🥥</span>
+              <span class="chain-name">Coconut</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item">
+              <span class="chain-emoji">🥭</span>
+              <span class="chain-name">Mango</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item">
+              <span class="chain-emoji">🍉</span>
+              <span class="chain-name">Watermelon</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item">
+              <span class="chain-emoji">🐉</span>
+              <span class="chain-name">Dragon Fruit</span>
+            </div>
+            <div class="chain-arrow">→</div>
+            <div class="chain-item special-win">
+              <span class="chain-emoji">👑</span>
+              <span class="chain-name">Golden Fruit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

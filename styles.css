@@ -1,0 +1,575 @@
+/* Fruit Merge 2048 — playful, responsive styling */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #faf3e8;
+  --surface: #fff8ef;
+  --text: #4a3728;
+  --text-muted: #8b7355;
+  --board-bg: #bbada0;
+  --cell-empty: #cdc1b4;
+  --shadow: 0 8px 24px rgba(74, 55, 40, 0.15);
+  --radius: 16px;
+  --tile-radius: 12px;
+}
+
+html {
+  touch-action: manipulation;
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background:
+    radial-gradient(circle at top left, #ffe8c8 0%, transparent 50%),
+    radial-gradient(circle at bottom right, #ffd6e0 0%, transparent 50%),
+    var(--bg);
+  color: var(--text);
+}
+
+.game-container {
+  width: min(100%, 480px);
+}
+
+/* Header */
+
+.game-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.title-block h1 {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.score-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+  padding: 8px 18px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.score-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.score-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.restart-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--radius);
+  background: #8f7a66;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.restart-btn:hover {
+  background: #776655;
+  transform: translateY(-1px);
+}
+.restart-btn:active {
+  transform: translateY(0);
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mute-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.mute-btn:hover {
+  background: #fdf6ec;
+  transform: translateY(-1px);
+}
+
+.mute-btn:active {
+  transform: translateY(0);
+}
+
+
+/* Message overlay */
+
+.message-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(74, 55, 40, 0.45);
+  z-index: 100;
+  padding: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+.message-overlay.hidden {
+  display: none;
+}
+
+.message-box {
+  text-align: center;
+  padding: 32px 28px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: 320px;
+  width: 100%;
+}
+
+.message-box p {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+/* Game board */
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 12px;
+  aspect-ratio: 1;
+  padding: 12px;
+  background: var(--board-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  user-select: none;
+  touch-action: none;
+  cursor: grab;
+}
+
+.game-board:active {
+  cursor: grabbing;
+}
+
+.cell {
+  position: relative;
+  background: var(--cell-empty);
+  border-radius: var(--tile-radius);
+  aspect-ratio: 1;
+}
+
+.tile {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--tile-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  font-weight: 700;
+  transition: transform 0.12s ease;
+}
+
+.tile-emoji {
+  font-size: clamp(1.4rem, 7vw, 2.2rem);
+  line-height: 1;
+}
+
+.tile-name {
+  margin-top: 2px;
+  font-size: clamp(0.45rem, 2vw, 0.65rem);
+  opacity: 0.85;
+  text-align: center;
+  line-height: 1.1;
+  padding: 0 4px;
+}
+
+/* Tile animations */
+
+.tile-new {
+  animation: tileAppear 0.25s ease;
+}
+
+.tile-merged {
+  animation: tileMerge 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes tileAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes tileMerge {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(0.75, 1.3); /* Initial squish on merge impact */
+  }
+  35% {
+    transform: scale(1.25, 0.75); /* Rebound squash */
+  }
+  55% {
+    transform: scale(0.85, 1.15); /* Wobble */
+  }
+  75% {
+    transform: scale(1.08, 0.92); /* Smaller wobble */
+  }
+  90% {
+    transform: scale(0.98, 1.02); /* Settling */
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Splash and Ripple animations */
+
+.juice-particle {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 10;
+  animation: splashFade 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes splashFade {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(0.1);
+    opacity: 0;
+  }
+}
+
+.merge-ripple {
+  position: absolute;
+  inset: 0;
+  border: 4px solid var(--ripple-color, rgba(255, 255, 255, 0.6));
+  border-radius: var(--tile-radius);
+  pointer-events: none;
+  z-index: 9;
+  animation: rippleEffect 0.4s ease-out forwards;
+}
+
+@keyframes rippleEffect {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Instructions */
+
+.instructions {
+  margin-top: 24px;
+  padding: 20px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.instructions-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.demo-figure {
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.play-demo-gif {
+  width: min(100%, 320px);
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--bg);
+}
+
+.demo-caption {
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.instructions-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.instruction-card {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+}
+
+.instruction-card h3 {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.instruction-card p,
+.instruction-card li {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.instruction-card ul {
+  padding-left: 18px;
+}
+
+.instruction-card li + li {
+  margin-top: 4px;
+}
+
+.merge-example {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border-radius: 10px;
+  list-style: none;
+  text-align: center;
+}
+
+.merge-example li {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.merge-note {
+  margin-top: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+@media (min-width: 520px) {
+  .instructions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .instruction-card:last-child {
+    grid-column: span 2;
+  }
+}
+
+/* Mobile tweaks */
+
+@media (max-width: 400px) {
+  .game-board {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .tile-name {
+    display: none;
+  }
+}
+
+/* Golden Fruit Aura & Pulsate */
+.tile-golden-glow {
+  box-shadow: 0 0 20px #ffd54f, 0 0 45px #ffd54f !important;
+  animation: goldenGlow 1.5s infinite alternate ease-in-out !important;
+}
+
+@keyframes goldenGlow {
+  0% {
+    transform: scale(1) rotate(0deg);
+    box-shadow: 0 0 20px #ffd54f, 0 0 40px #ffd54f;
+  }
+  50% {
+    transform: scale(1.06) rotate(1.5deg);
+    box-shadow: 0 0 25px #ffb300, 0 0 50px #ffb300;
+  }
+  100% {
+    transform: scale(1.02) rotate(-1.5deg);
+    box-shadow: 0 0 35px #ffd54f, 0 0 60px #ffd54f;
+  }
+}
+
+/* Game Over Board State (grayscale & blur) */
+.game-board-gameover {
+  transition: filter 1.2s ease, opacity 1.2s ease;
+}
+
+.game-board-gameover .tile {
+  filter: grayscale(85%) blur(1px) !important;
+  opacity: 0.55 !important;
+  transform: scale(0.92) !important;
+  transition: filter 1.2s ease, opacity 1.2s ease, transform 1.2s ease !important;
+}
+
+/* Bouncy Pop-In overlay for Message Box */
+.message-box {
+  transform: scale(0.6);
+  opacity: 0;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Confetti styling */
+.confetti {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  z-index: 101;
+  border-radius: 50%;
+  animation: confettiFall var(--fall-duration) linear forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-15px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Fruit Evolution Chain styling */
+.fruit-chain-card {
+  grid-column: 1 / -1; /* Take full width */
+}
+
+.fruit-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 6px;
+  margin-top: 12px;
+  padding: 14px;
+  background: var(--bg);
+  border-radius: 12px;
+}
+
+.chain-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  background: var(--surface);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(74, 55, 40, 0.05);
+  min-width: 68px;
+}
+
+.chain-item.special-win {
+  background: #ffd54f;
+  color: #4a3728;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 213, 79, 0.6);
+}
+
+.chain-emoji {
+  font-size: 1.4rem;
+}
+
+.chain-name {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 2px;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.chain-item.special-win .chain-name {
+  color: #8b7355;
+}
+
+.chain-arrow {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: bold;
+}
